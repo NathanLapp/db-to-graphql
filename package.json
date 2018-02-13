@@ -1,0 +1,24 @@
+{
+  "name": "db-to-graphql",
+  "version": "0.1.0",
+  "description": "A graphql schema generator that uses the schema(s) of a database to generate a graphql schema.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NathanLapp/db-to-graphql.git"
+  },
+  "author": "Nathan Lapp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NathanLapp/db-to-graphql/issues"
+  },
+  "homepage": "https://github.com/NathanLapp/db-to-graphql#readme",
+  "dependencies": {
+    "graphql": "^0.13.0",
+    "lodash": "^4.17.5",
+    "oracledb": "^2.0.15"
+  }
+}
