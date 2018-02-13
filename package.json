@@ -1,6 +1,6 @@
 {
   "name": "db-to-graphql",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A graphql schema generator that uses the schema(s) of a database to generate a graphql schema.",
   "main": "index.js",
   "scripts": {
