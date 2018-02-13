@@ -52,6 +52,8 @@ dbToGraphql.generateGraphQL(DB_CONNECTION, 'Oracle', ['SCHEMA1', 'SCHEMA2'])
 ### Dependencies
   * [Oracle thin client](https://oracle.github.io/odpi/doc/installation.html)
     * Required for the [oracledb](https://github.com/oracle/node-oracledb/blob/master/INSTALL.md) package.
+  * graphql
+  * lodash
 
 ### Contributing
 
