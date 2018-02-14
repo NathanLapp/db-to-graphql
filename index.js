@@ -56,7 +56,7 @@ var generateGraphQL = function(__dbConnection, dbType, selectedSchemas = null) {
         type ${table.owner}_${table.name} {`;
             var isFirst = true;
             Object.keys(table).forEach(function (key) {
-              if (key != 'DB_CONNECTION' && key != 'DB_TYPE' && key != 'selectColumns' && typeof table[key] == 'object') {
+              if (key != 'DB_CONNECTION' && key != 'DB_TYPE' && key != 'selectColumns' && key != 'selectColumnsFormatted' && typeof table[key] == 'object') {
                 graphqlSchema += `
           ${table[key].name}: ${translateJStoGraphQLType(table[key].dataType)}`;
                 if (!isFirst) schemaQuery += ', ';
@@ -129,7 +129,7 @@ var translateJStoGraphQLType = function(type) {
     case 'STRING':
       return 'String';
     case 'NUMBER':
-      return 'Int';
+      return 'Float';
     default:
       return 'String';
   }
@@ -174,7 +174,8 @@ var getData = function(__dbConnection, __dbType, fromTable, selectColumns, where
             if (i === 0) query += ' WHERE (ROWNUM <= ' + maxRows + ') AND (';
             else query += ' ' + whereColumns[i].operation;
 
-            query += ' ' + whereColumns[i].column.name + ' = :' + whereColumns[i].column.name+i;
+            if (whereColumns[i].column.dataType === 'STRING') query += ' ' + whereColumns[i].column.name + ' LIKE :' + whereColumns[i].column.name+i;
+            else query += ' ' + whereColumns[i].column.name + ' = :' + whereColumns[i].column.name+i;
             code = 'bindvars.' + whereColumns[i].column.name+i + ' = whereColumns[' + i + '].value;';
             vm.runInContext(code, sandbox);
           }
@@ -275,6 +276,7 @@ var getOracleORM = function(__dbConnection) { return new Promise(function (resol
         WHEN tab.DATA_TYPE = 'DATE' THEN 'STRING'
         WHEN tab.DATA_TYPE LIKE 'TIMESTAMP%' THEN 'STRING'
         WHEN tab.DATA_TYPE LIKE 'LONG%' THEN 'NUMBER'
+        WHEN tab.DATA_TYPE = 'NUMBER' THEN 'NUMBER'
         WHEN tab.DATA_TYPE = 'RAW' THEN 'STRING'
         WHEN tab.DATA_TYPE LIKE '_LOB' THEN 'STRING'
         WHEN tab.DATA_TYPE = 'RAW' THEN 'STRING'
@@ -295,6 +297,7 @@ var getOracleORM = function(__dbConnection) { return new Promise(function (resol
         WHEN tab.DATA_TYPE = 'DATE' THEN 'STRING'
         WHEN tab.DATA_TYPE LIKE 'TIMESTAMP%' THEN 'STRING'
         WHEN tab.DATA_TYPE LIKE 'LONG%' THEN 'NUMBER'
+        WHEN tab.DATA_TYPE = 'NUMBER' THEN 'NUMBER'
         WHEN tab.DATA_TYPE = 'RAW' THEN 'STRING'
         WHEN tab.DATA_TYPE LIKE '_LOB' THEN 'STRING'
         WHEN tab.DATA_TYPE = 'RAW' THEN 'STRING'
